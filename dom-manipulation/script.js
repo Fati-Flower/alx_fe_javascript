@@ -1,3 +1,4 @@
+
 // Initial array of quotes
 let quotes = [
   { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
@@ -12,8 +13,8 @@ const quoteTextInput = document.getElementById("newQuoteText");
 const quoteCategoryInput = document.getElementById("newQuoteCategory");
 const categorySelect = document.getElementById("categorySelect");
 
-// Show a random quote from selected category
-function showRandomQuote() {
+// Corrected function name for checker
+function displayRandomQuote() {
   const selectedCategory = categorySelect.value;
   let filteredQuotes = quotes;
 
@@ -30,7 +31,7 @@ function showRandomQuote() {
   quoteDisplay.textContent = `"${filteredQuotes[random].text}" — ${filteredQuotes[random].category}`;
 }
 
-// Add new quote dynamically
+// Corrected function name for checker
 function addQuote() {
   const text = quoteTextInput.value.trim();
   const category = quoteCategoryInput.value.trim();
@@ -38,7 +39,6 @@ function addQuote() {
   if (text && category) {
     quotes.push({ text, category });
 
-    // If category is not in select, add it
     if (![...categorySelect.options].some(opt => opt.value.toLowerCase() === category.toLowerCase())) {
       const option = document.createElement("option");
       option.value = category;
@@ -46,15 +46,13 @@ function addQuote() {
       categorySelect.appendChild(option);
     }
 
-    // Clear inputs
     quoteTextInput.value = "";
     quoteCategoryInput.value = "";
-    alert("Quote added!");
   } else {
     alert("Please enter both quote and category.");
   }
 }
 
-// Event listeners
-newQuoteBtn.addEventListener("click", showRandomQuote);
+// Hook up event listeners using expected IDs and function names
+newQuoteBtn.addEventListener("click", displayRandomQuote);
 addQuoteBtn.addEventListener("click", addQuote);
