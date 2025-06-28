@@ -6,9 +6,6 @@ let quotes = [
 
 const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteBtn = document.getElementById("newQuote");
-const addQuoteBtn = document.getElementById("addQuote");
-const quoteTextInput = document.getElementById("newQuoteText");
-const quoteCategoryInput = document.getElementById("newQuoteCategory");
 const categorySelect = document.getElementById("categorySelect");
 
 function showRandomQuote() {
@@ -29,8 +26,10 @@ function showRandomQuote() {
 }
 
 function addQuote() {
-  const text = quoteTextInput.value.trim();
-  const category = quoteCategoryInput.value.trim();
+  const textInput = document.getElementById("newQuoteText");
+  const categoryInput = document.getElementById("newQuoteCategory");
+  const text = textInput.value.trim();
+  const category = categoryInput.value.trim();
 
   if (text && category) {
     quotes.push({ text, category });
@@ -42,12 +41,37 @@ function addQuote() {
       categorySelect.appendChild(option);
     }
 
-    quoteTextInput.value = "";
-    quoteCategoryInput.value = "";
+    textInput.value = "";
+    categoryInput.value = "";
   } else {
     alert("Please enter both quote and category.");
   }
 }
 
+function createAddQuoteForm() {
+  const formContainer = document.createElement("div");
+
+  const inputText = document.createElement("input");
+  inputText.id = "newQuoteText";
+  inputText.type = "text";
+  inputText.placeholder = "Enter a new quote";
+
+  const inputCategory = document.createElement("input");
+  inputCategory.id = "newQuoteCategory";
+  inputCategory.type = "text";
+  inputCategory.placeholder = "Enter quote category";
+
+  const addButton = document.createElement("button");
+  addButton.textContent = "Add Quote";
+  addButton.addEventListener("click", addQuote);
+
+  formContainer.appendChild(inputText);
+  formContainer.appendChild(inputCategory);
+  formContainer.appendChild(addButton);
+
+  document.body.appendChild(formContainer);
+}
+
+
 newQuoteBtn.addEventListener("click", showRandomQuote);
-addQuoteBtn.addEventListener("click", addQuote);
+createAddQuoteForm();
