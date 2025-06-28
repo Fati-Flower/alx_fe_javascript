@@ -1,5 +1,4 @@
 
-// Initial array of quotes
 let quotes = [
   { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
   { text: "Life is what happens when you're busy making other plans.", category: "Life" },
@@ -13,7 +12,7 @@ const quoteTextInput = document.getElementById("newQuoteText");
 const quoteCategoryInput = document.getElementById("newQuoteCategory");
 const categorySelect = document.getElementById("categorySelect");
 
-// Corrected function name for checker
+
 function displayRandomQuote() {
   const selectedCategory = categorySelect.value;
   let filteredQuotes = quotes;
@@ -31,7 +30,7 @@ function displayRandomQuote() {
   quoteDisplay.textContent = `"${filteredQuotes[random].text}" — ${filteredQuotes[random].category}`;
 }
 
-// Corrected function name for checker
+
 function addQuote() {
   const text = quoteTextInput.value.trim();
   const category = quoteCategoryInput.value.trim();
@@ -53,6 +52,5 @@ function addQuote() {
   }
 }
 
-// Hook up event listeners using expected IDs and function names
 newQuoteBtn.addEventListener("click", displayRandomQuote);
 addQuoteBtn.addEventListener("click", addQuote);
