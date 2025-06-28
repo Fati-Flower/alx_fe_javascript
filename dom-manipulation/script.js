@@ -134,46 +134,50 @@ function importFromJsonFile(event) {
 const SERVER_URL = "https://jsonplaceholder.typicode.com/posts";
 
 // Required function by checker
-function fetchQuotesFromServer() {
-  return fetch(SERVER_URL)
-    .then(response => response.json())
-    .then(() => {
-      return [
-        { text: "Stay hungry, stay foolish.", category: "Inspiration" },
-        { text: "Code is like humor. When you have to explain it, it’s bad.", category: "Programming" }
-      ];
-    });
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch(SERVER_URL);
+    const data = await response.json();
+
+    // Simule les données renvoyées du "serveur"
+    return [
+      { text: "Stay hungry, stay foolish.", category: "Inspiration" },
+      { text: "Code is like humor. When you have to explain it, it’s bad.", category: "Programming" }
+    ];
+  } catch (error) {
+    console.error("Error fetching from server:", error);
+    return [];
+  }
 }
 
-function syncWithServer() {
+//
+async function syncWithServer() {
   console.log(" Syncing with server...");
+  try {
+    const simulatedQuotes = await fetchQuotesFromServer();
+    let updated = false;
 
-  fetchQuotesFromServer()
-    .then(simulatedQuotes => {
-      let updated = false;
-
-      simulatedQuotes.forEach(serverQuote => {
-        const localIndex = quotes.findIndex(q => q.text === serverQuote.text);
-        if (localIndex === -1) {
-          quotes.push(serverQuote);
-          updated = true;
-        } else if (quotes[localIndex].category !== serverQuote.category) {
-          quotes[localIndex].category = serverQuote.category;
-          updated = true;
-        }
-      });
-
-      if (updated) {
-        saveQuotes();
-        populateCategories();
-        showNotification(" Data synced with server. Conflicts resolved.");
-      } else {
-        console.log("No updates from server.");
+    simulatedQuotes.forEach(serverQuote => {
+      const localIndex = quotes.findIndex(q => q.text === serverQuote.text);
+      if (localIndex === -1) {
+        quotes.push(serverQuote);
+        updated = true;
+      } else if (quotes[localIndex].category !== serverQuote.category) {
+        quotes[localIndex].category = serverQuote.category;
+        updated = true;
       }
-    })
-    .catch(err => {
-      console.error(" Error syncing with server:", err);
     });
+
+    if (updated) {
+      saveQuotes();
+      populateCategories();
+      showNotification(" Data synced with server. Conflicts resolved.");
+    } else {
+      console.log("No updates from server.");
+    }
+  } catch (error) {
+    console.error(" Sync failed:", error);
+  }
 }
 
 function showNotification(msg) {
