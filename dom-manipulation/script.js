@@ -144,3 +144,69 @@ exportBtn.addEventListener("click", exportToJsonFile);
 // Init
 loadQuotes();
 createAddQuoteForm();
+
+const SERVER_URL = "https://jsonplaceholder.typicode.com/posts"; // You can change this to a mock quote API
+
+// Simulate syncing with server every 15 seconds
+setInterval(syncWithServer, 15000);
+
+function syncWithServer() {
+  console.log("🔄 Syncing with server...");
+
+  fetch(SERVER_URL)
+    .then(response => response.json())
+    .then(serverData => {
+      // Simulated server data format:
+      // We will simulate with a few entries for now
+      const simulatedQuotes = [
+        { text: "Stay hungry, stay foolish.", category: "Inspiration" },
+        { text: "Code is like humor. When you have to explain it, it’s bad.", category: "Programming" }
+      ];
+
+      let updated = false;
+
+      simulatedQuotes.forEach(serverQuote => {
+        const localIndex = quotes.findIndex(
+          q => q.text === serverQuote.text
+        );
+
+        if (localIndex === -1) {
+          // New quote from server
+          quotes.push(serverQuote);
+          updated = true;
+        } else {
+          // Conflict resolution: server overwrites local
+          if (quotes[localIndex].category !== serverQuote.category) {
+            quotes[localIndex].category = serverQuote.category;
+            updated = true;
+          }
+        }
+      });
+
+      if (updated) {
+        saveQuotes();
+        populateCategories();
+        showNotification("Data synced with server. Conflicts resolved.");
+      } else {
+        console.log("No updates from server.");
+      }
+    })
+    .catch(err => {
+      console.error("Error syncing with server:", err);
+    });
+}
+
+// Optional: Add a visual notification
+function showNotification(msg) {
+  const note = document.createElement("div");
+  note.textContent = msg;
+  note.style.background = "#e0ffe0";
+  note.style.border = "1px solid #8f8";
+  note.style.padding = "10px";
+  note.style.margin = "10px 0";
+  note.style.borderRadius = "5px";
+  document.body.prepend(note);
+
+  setTimeout(() => note.remove(), 5000);
+}
+
