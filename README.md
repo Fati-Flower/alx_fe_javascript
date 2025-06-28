@@ -1,0 +1,1 @@
+This is a simple and interactive web application that dynamically displays quotes based on categories and allows users to add their own quotes — built using only **HTML**, **CSS**, and **JavaScript** (no frameworks!).
