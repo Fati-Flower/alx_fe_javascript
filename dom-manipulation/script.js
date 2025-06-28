@@ -1,6 +1,6 @@
+
 let quotes = [];
 
-// Load quotes and filter from localStorage
 function loadQuotes() {
   const storedQuotes = localStorage.getItem("quotes");
   const lastFilter = localStorage.getItem("selectedCategory");
@@ -130,34 +130,16 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// DOM references
-const quoteDisplay = document.getElementById("quoteDisplay");
-const newQuoteBtn = document.getElementById("newQuote");
-const importInput = document.getElementById("importFile");
-const exportBtn = document.getElementById("exportJson");
-
-// Event listeners
-newQuoteBtn.addEventListener("click", showRandomQuote);
-importInput.addEventListener("change", importFromJsonFile);
-exportBtn.addEventListener("click", exportToJsonFile);
-
-// Init
-loadQuotes();
-createAddQuoteForm();
-
-const SERVER_URL = "https://jsonplaceholder.typicode.com/posts"; // You can change this to a mock quote API
-
-// Simulate syncing with server every 15 seconds
-setInterval(syncWithServer, 15000);
+// SERVER SYNC & CONFLICT RESOLUTION
+const SERVER_URL = "https://jsonplaceholder.typicode.com/posts";
 
 function syncWithServer() {
   console.log("🔄 Syncing with server...");
 
   fetch(SERVER_URL)
     .then(response => response.json())
-    .then(serverData => {
-      // Simulated server data format:
-      // We will simulate with a few entries for now
+    .then(() => {
+      // Simulate server quotes
       const simulatedQuotes = [
         { text: "Stay hungry, stay foolish.", category: "Inspiration" },
         { text: "Code is like humor. When you have to explain it, it’s bad.", category: "Programming" }
@@ -166,37 +148,29 @@ function syncWithServer() {
       let updated = false;
 
       simulatedQuotes.forEach(serverQuote => {
-        const localIndex = quotes.findIndex(
-          q => q.text === serverQuote.text
-        );
-
+        const localIndex = quotes.findIndex(q => q.text === serverQuote.text);
         if (localIndex === -1) {
-          // New quote from server
           quotes.push(serverQuote);
           updated = true;
-        } else {
-          // Conflict resolution: server overwrites local
-          if (quotes[localIndex].category !== serverQuote.category) {
-            quotes[localIndex].category = serverQuote.category;
-            updated = true;
-          }
+        } else if (quotes[localIndex].category !== serverQuote.category) {
+          quotes[localIndex].category = serverQuote.category;
+          updated = true;
         }
       });
 
       if (updated) {
         saveQuotes();
         populateCategories();
-        showNotification("Data synced with server. Conflicts resolved.");
+        showNotification("✅ Data synced with server. Conflicts resolved.");
       } else {
         console.log("No updates from server.");
       }
     })
     .catch(err => {
-      console.error("Error syncing with server:", err);
+      console.error("❌ Error syncing with server:", err);
     });
 }
 
-// Optional: Add a visual notification
 function showNotification(msg) {
   const note = document.createElement("div");
   note.textContent = msg;
@@ -210,3 +184,16 @@ function showNotification(msg) {
   setTimeout(() => note.remove(), 5000);
 }
 
+// DOM references
+const quoteDisplay = document.getElementById("quoteDisplay");
+const newQuoteBtn = document.getElementById("newQuote");
+const importInput = document.getElementById("importFile");
+const exportBtn = document.getElementById("exportJson");
+
+newQuoteBtn.addEventListener("click", showRandomQuote);
+importInput.addEventListener("change", importFromJsonFile);
+exportBtn.addEventListener("click", exportToJsonFile);
+
+loadQuotes();
+createAddQuoteForm();
+setInterval(syncWithServer, 15000);
