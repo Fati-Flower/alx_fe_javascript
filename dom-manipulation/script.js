@@ -171,7 +171,7 @@ async function syncQuotes() {
 }
 
 async function syncWithServer() {
-  console.log(" Syncing with server...");
+  console.log("🔄 Syncing with server...");
   try {
     const simulatedQuotes = await fetchQuotesFromServer();
     let updated = false;
@@ -190,7 +190,7 @@ async function syncWithServer() {
     if (updated) {
       saveQuotes();
       populateCategories();
-      showNotification(" Data synced with server. Conflicts resolved.");
+      showNotification("Quotes synced with server!");
     } else {
       console.log("No updates from server.");
     }
