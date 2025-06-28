@@ -11,7 +11,6 @@ const quoteTextInput = document.getElementById("newQuoteText");
 const quoteCategoryInput = document.getElementById("newQuoteCategory");
 const categorySelect = document.getElementById("categorySelect");
 
-// ✅ Function name & innerHTML required by the checker
 function showRandomQuote() {
   const selectedCategory = categorySelect.value;
   let filteredQuotes = quotes;
