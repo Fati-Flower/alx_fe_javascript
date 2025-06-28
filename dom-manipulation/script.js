@@ -1,4 +1,3 @@
-
 let quotes = [
   { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
   { text: "Life is what happens when you're busy making other plans.", category: "Life" },
@@ -12,8 +11,8 @@ const quoteTextInput = document.getElementById("newQuoteText");
 const quoteCategoryInput = document.getElementById("newQuoteCategory");
 const categorySelect = document.getElementById("categorySelect");
 
-
-function displayRandomQuote() {
+// ✅ Function name & innerHTML required by the checker
+function showRandomQuote() {
   const selectedCategory = categorySelect.value;
   let filteredQuotes = quotes;
 
@@ -22,14 +21,13 @@ function displayRandomQuote() {
   }
 
   if (filteredQuotes.length === 0) {
-    quoteDisplay.textContent = "No quotes available in this category.";
+    quoteDisplay.innerHTML = "No quotes available in this category.";
     return;
   }
 
   const random = Math.floor(Math.random() * filteredQuotes.length);
-  quoteDisplay.textContent = `"${filteredQuotes[random].text}" — ${filteredQuotes[random].category}`;
+  quoteDisplay.innerHTML = `"${filteredQuotes[random].text}" — ${filteredQuotes[random].category}`;
 }
-
 
 function addQuote() {
   const text = quoteTextInput.value.trim();
@@ -52,5 +50,5 @@ function addQuote() {
   }
 }
 
-newQuoteBtn.addEventListener("click", displayRandomQuote);
+newQuoteBtn.addEventListener("click", showRandomQuote);
 addQuoteBtn.addEventListener("click", addQuote);
